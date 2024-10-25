@@ -96,8 +96,8 @@ name, account type, and contact information.
 - **Endpoint**: `/api/register`
 - **Method**: `POST`
 - **Request**:
-- **Headers**:
-- `Content-Type: application/json`
+  - **Headers**:
+    - `Content-Type: application/json`
 - **Body:**
 
 ```java
@@ -143,7 +143,7 @@ name, account type, and contact information.
   - **Headers:**
      - `Authorization: Bearer token`
      - `Content-Type: application/json`
-       - **Body:**
+  - **Body:**
 
 ```java
 {
@@ -177,8 +177,7 @@ name, account type, and contact information.
    - `Authorization: Bearer token`
    - `Content-Type: application/json`
  
-
-  - **Body:**
+- **Body:**
   
 ```java
 {
@@ -245,8 +244,8 @@ name, account type, and contact information.
     - `Authorization: Bearer token`
   - **Query Parameters:**
     - `accountNumber`: The account number of the user.
-    - **Response:**
-    - **Success (200):**
+  - **Response:**
+  - **Success (200):**
  
 ```java
 {
@@ -270,7 +269,7 @@ name, account type, and contact information.
   - **Headers:**
      - `Authorization: Bearer token`
      - `Content-Type: application/json`
-  - **Body:**
+- **Body:**
 ```java
 {
   "accountNumber": "string",
@@ -302,7 +301,7 @@ name, account type, and contact information.
   - **Headers:**
      - `Authorization: Bearer token`
      - `Content-Type: application/json`
- - **Body:**
+- **Body:**
 
 ```java
 {
