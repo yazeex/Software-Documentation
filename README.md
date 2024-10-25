@@ -131,10 +131,6 @@ name, account type, and contact information.
   "message": "Missing or invalid parameters"
    }
 
-
-
-
-
 ### 3.**Transfers**
 - **Description**:Transfers a specified amount between accounts.
 - **Endpoint:** `/api/transfer`
@@ -200,9 +196,6 @@ name, account type, and contact information.
   "message": "Amount cannot be negative"
 }
 ```
-  
-
-
 ### 5.**Withdrawal**
 - **Description**:Withdraws a specified amount from the user's account.
 - **Endpoint**: `/api/withdraw`
@@ -233,8 +226,6 @@ name, account type, and contact information.
   "message": "Withdrawal amount exceeds available balance"
 }
 ``` 
-
-
 ### 6.**View Balance**
 - **Description**: Retrieves the balance of a specified account.
 - **Endpoint**: `/api/balance`
@@ -260,7 +251,6 @@ name, account type, and contact information.
   "message": "No account exists with this number"
 }
 ```
-
 ### 7.**Change PIN**
 - **Description**:Changes the account's PIN for security purposes.
 - **Endpoint**: `/api/changePIN`
@@ -291,8 +281,6 @@ name, account type, and contact information.
   "message": "Old PIN is incorrect"
 }
 ```
-
-
 ### 8.**Profile Edit**
 - **Description**:Edits and updates the profile details of the user.
 - **Endpoint**: `/api/editProfile`
@@ -328,6 +316,4 @@ name, account type, and contact information.
   "message": "No account found with this number"
 }
 ```
-
-
 This repo is for the  UQU software documentation course.
