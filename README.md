@@ -143,7 +143,7 @@ name, account type, and contact information.
   - **Headers:**
      - `Authorization: Bearer token`
      - `Content-Type: application/json`
-  - **Body:**
+- **Body:**<br>
 
 ```java
 {
