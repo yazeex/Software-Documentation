@@ -49,181 +49,286 @@ name, account type, and contact information.
 ## Core Components and Modules
 
 ### 1.**Login**
-- **Purpose**:Authenticates a user by checking their account number and PIN.
-
-  #### Key Methods:
+- **Description**:Authenticates a user by checking their account number and PIN.
+- **Endpoint**: `/api/login`
+- **Method**: `POST`
+- **Request**:
+    - **Headers**:
+      - `Content-Type: application/json`
+- **Body**:
   ```java
-  private void LogonActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "select * from Account where Acc=? and Pin=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, AccnumLP.getText());
-        pst.setString(2, PinLP.getText());
-        rs = pst.executeQuery();
-        if (rs.next()) {
-            setVisible(false);
-            Loading ob = new Loading();
-            ob.setUpLoading();
-            ob.setVisible(true);
-            rs.close();
-            pst.close();
-        } else {
-            JOptionPane.showMessageDialog(null, "Incorrect login");
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+  {
+  "accountNumber": "string",
+  "pin": "string"
+  ]
+
+ 
+- **Response**:
+  - **Success (200)**:
+    
+```java
+{
+  "message": "Login successful",
+  "token": "JWT Token"
+]
+```
+
+
+- **Error (401)**"
+  ```java
+  {
+  "error": "Invalid credentials",
+  "message": "Incorrect account number or pin"
+  ]
+  ```
+
+   - **Error (500)**:
+
+  ```java
+  {
+  "error": "Server error",
+  "message": "An internal error occurred"
   }
+  ```
 
 ### 2.**Registration**
-- **Purpose**:Creates a new account by registering a user with the required details
+- **Description**:Creates a new account by registering a user with the required details
+- **Endpoint**: `/api/register`
+- **Method**: `POST`
+- **Request**:
+- **Headers**:
+- `Content-Type: application/json`
+- **Body:**
 
-  #### Key Methods:
 ```java
-private void CreateActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "insert into Account(Acc,Name,DOB,Pin,Acc_Type,Ethnicity,MICR_No,Gender,Mob,Address,Sec_Q,Sec_A,Balance) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, AccnumAP.getText());
-        pst.setString(2, FullnameAP.getText());
-        pst.setString(3, ((JTextField)DateofbirthAP.getDateEditor().getUiComponent()).getText());
-        pst.setString(4, PinAP.getText());
-        pst.setString(5, (String) AcctypeAP.getSelectedItem());
-        pst.setString(6, (String) EthnicityAP.getSelectedItem());
-        pst.setString(7, MnumAP.getText());
-        pst.setString(8, buttonGroup1.getSelection().getActionCommand());
-        pst.setString(9, MobileAP.getText());
-        pst.setString(10, AddressAP.getText());
-        pst.setString(11, (String) SecurityqAP.getSelectedItem());
-        pst.setString(12, AnswerAP.getText());
-        pst.setString(13, AmountxtAP.getText());
-        pst.execute();
-        JOptionPane.showMessageDialog(null, "Success! Account has been created");
-        Bal();
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "name": "string",
+  "dob": "YYYY-MM-DD",
+  "pin": "string",
+  "accountType": "string",
+  "ethnicity": "string",
+  "gender": "string",
+  "mobile": "string",
+  "address": "string",
+  "securityQuestion": "string",
+  "securityAnswer": "string",
+  "initialDeposit": "number"
 }
+
 ```
+- **Success (201):**
+  ```java
+  {
+  "accountNumber": "string",
+  "message": "Account created successfully"
+  }
+  ```
+  - **Error (400):**
+    
+   ```java
+   {
+  "error": "Validation error",
+  "message": "Missing or invalid parameters"
+   }
+
+
+
+
+
 ### 3.**Transfers**
-- **Purpose**:Transfers a specified amount between accounts.
+- **Description**:Transfers a specified amount between accounts.
+- **Endpoint:** `/api/transfer`
+- **Method:** `POST`
+- **Request:**
+  - **Headers:**
+     - `Authorization: Bearer token`
+     - `Content-Type: application/json`
+       - **Body:**
 
-    #### Key Methods:
 ```java
-private void TransferActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "update Account set Balance=? where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, NewbalTransfer.getText());
-        pst.setString(2, AccnumTransfer.getText());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Transfer Successful");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "fromAccountNumber": "string",
+  "toAccountNumber": "string",
+  "amount": "number"
+}
+
+```
+- **Response:**
+- **Success (200):**
+```java
+{
+  "message": "Transfer successful",
+  "newBalance": "number"
 }
 ```
-### 3.**Deposit**
-- **Purpose**:Deposits a specified amount into the user's account.
-
-    #### Key Methods:
+- **Error (400):**
 ```java
-private void DepositActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "update Account set Balance=? where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, NewbalDeposit.getText());
-        pst.setString(2, AccnumDeposit.getText());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Deposit Successful");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "error": "Insufficient balance",
+  "message": "Transfer amount exceeds available balance"
+}
+```
+### 4.**Deposit**
+- **Description**:Deposits a specified amount into the user's account.
+  - **Endpoint:** `/api/deposit`
+- **Method:** `POST`
+- **Request**:
+  - **Headers:**
+   - `Authorization: Bearer token`
+   - `Content-Type: application/json`
+ 
+
+  - **Body:**
+  
+```java
+{
+  "accountNumber": "string",
+  "amount": "number"
+}
+```
+- **Response:**
+- **Success (200):**
+```java
+{
+  "message": "Deposit successful",
+  "newBalance": "number"
+}
+```
+- **Error (400):**
+```java
+{
+  "error": "Invalid deposit amount",
+  "message": "Amount cannot be negative"
+}
+```
+  
+
+
+### 5.**Withdrawal**
+- **Description**:Withdraws a specified amount from the user's account.
+- **Endpoint**: `/api/withdraw`
+- **Method**: `POST`
+- **Request:**
+ - **Headers:**
+    - ` Authorization: Bearer token`
+   - ` Content-Type: application/json`
+ -  **Body:**
+```java
+{
+  "accountNumber": "string",
+  "amount": "number"
+}
+```
+- **Response:**
+   - **Success (200):**
+ ```java
+{
+  "message": "Withdrawal successful",
+  "newBalance": "number"
+}
+```
+- **Error (400):**
+```java
+{
+  "error": "Insufficient balance",
+  "message": "Withdrawal amount exceeds available balance"
+}
+``` 
+
+
+### 6.**View Balance**
+- **Description**: Retrieves the balance of a specified account.
+- **Endpoint**: `/api/balance`
+- **Method**: `GET`
+- **Request:**
+ - **Headers:**
+    - `Authorization: Bearer token`
+  - **Query Parameters:**
+    - `accountNumber`: The account number of the user.
+    - **Response:**
+    - **Success (200):**
+ 
+```java
+{
+  "balance": "number",
+  "accountNumber": "string"
+}
+```
+- **Error (404):**
+```java
+{
+  "error": "Account not found",
+  "message": "No account exists with this number"
 }
 ```
 
-### 4.**Withdrawal**
-- **Purpose**:Withdraws a specified amount from the user's account.
-
-    #### Key Methods:
+### 7.**Change PIN**
+- **Description**:Changes the account's PIN for security purposes.
+- **Endpoint**: `/api/changePIN`
+- **Method**: `PUT`
+- **Request:**
+  - **Headers:**
+     - `Authorization: Bearer token`
+     - `Content-Type: application/json`
+  - **Body:**
 ```java
-private void WithdrawActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "update Account set Balance=? where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, NewbalWithdraw.getText());
-        pst.setString(2, AccnumWithdraw.getText());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Withdrawal Successful");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "accountNumber": "string",
+  "oldPIN": "string",
+  "newPIN": "string"
+}
+```
+- **Response:**
+- **Success (200):**
+```java
+{
+  "message": "PIN changed successfully"
+}
+```
+- **Error (400):**
+```java
+{
+  "error": "Invalid PIN",
+  "message": "Old PIN is incorrect"
 }
 ```
 
-### 5.**View Balance**
-- **Purpose**: Retrieves the balance of a specified account.
 
-    #### Key Methods:
+### 8.**Profile Edit**
+- **Description**:Edits and updates the profile details of the user.
+- **Endpoint**: `/api/editProfile`
+- **Method**: `PUT`
+- **Request:**
+  - **Headers:**
+     - `Authorization: Bearer token`
+     - `Content-Type: application/json`
+ - **Body:**
+
 ```java
-private void SearchVBActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "select * from Account where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, AccnumVB.getText());
-        rs = pst.executeQuery();
-        if (rs.next()) {
-            FullnameVB.setText(rs.getString("Name"));
-            MnumVB.setText(rs.getString("MICR_No"));
-            BalVB.setText(rs.getString("Balance"));
-        } else {
-            JOptionPane.showMessageDialog(null, "Account Not Found");
-        }
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "accountNumber": "string",
+  "name": "string",
+  "address": "string",
+  "mobile": "string",
+  "ethnicity": "string",
+  "gender": "string",
+  "dob": "YYYY-MM-DD"
 }
 ```
-### 6.**Change PIN**
-- **Purpose**:Changes the account's PIN for security purposes.
-
-    #### Key Methods:
+- **Response:**
+- **Success (200):**
 ```java
-private void ChangepinActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "update Account set Pin=? where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, NewpinChange.getText());
-        pst.setString(2, OldpinChange.getText());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "PIN changed successfully");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
+{
+  "message": "Profile updated successfully"
+}
+```
+- **Error (404):**
+```java
+{
+  "error": "Account not found",
+  "message": "No account found with this number"
 }
 ```
 
-### 7.**Profile Edit**
-- **Purpose**:Edits and updates the profile details of the user.
 
-    #### Key Methods:
-```java
-private void SaveProfileActionPerformed(java.awt.event.ActionEvent evt) {
-    String sql = "update Account set Name=?, Address=?, Mob=?, Ethnicity=?, Gender=?, DOB=? where Acc=?";
-    try {
-        pst = conn.prepareStatement(sql);
-        pst.setString(1, FullnameProfile.getText());
-        pst.setString(2, AddressProfile.getText());
-        pst.setString(3, MobileProfile.getText());
-        pst.setString(4, EthnicityProfile.getText());
-        pst.setString(5, GenderProfile.getText());
-        pst.setString(6, DateofBirthProfile.getText());
-        pst.setString(7, AccnumProfile.getText());
-        pst.executeUpdate();
-        JOptionPane.showMessageDialog(null, "Profile Updated");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, e);
-    }
-}
-```
 This repo is for the  UQU software documentation course.
