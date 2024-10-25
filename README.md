@@ -64,7 +64,7 @@ name, account type, and contact information.
 
  
 - **Response**:
-  - **Success (200)**:
+- **Success (200)**:
     
 ```java
 {
@@ -82,7 +82,7 @@ name, account type, and contact information.
   ]
   ```
 
-   - **Error (500)**:
+- **Error (500)**:
 
   ```java
   {
@@ -123,7 +123,7 @@ name, account type, and contact information.
   "message": "Account created successfully"
   }
   ```
-  - **Error (400):**
+- **Error (400):**
     
    ```java
    {
@@ -211,7 +211,7 @@ name, account type, and contact information.
  - **Headers:**
     - ` Authorization: Bearer token`
    - ` Content-Type: application/json`
- -  **Body:**
+-  **Body:**
 ```java
 {
   "accountNumber": "string",
@@ -219,7 +219,7 @@ name, account type, and contact information.
 }
 ```
 - **Response:**
-   - **Success (200):**
+- **Success (200):**
  ```java
 {
   "message": "Withdrawal successful",
@@ -244,8 +244,8 @@ name, account type, and contact information.
     - `Authorization: Bearer token`
   - **Query Parameters:**
     - `accountNumber`: The account number of the user.
-  - **Response:**
-  - **Success (200):**
+- **Response:**
+- **Success (200):**
  
 ```java
 {
