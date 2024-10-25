@@ -231,9 +231,9 @@ name, account type, and contact information.
 - **Endpoint**: `/api/balance`
 - **Method**: `GET`
 - **Request:**
- - **Headers:**
-    - `Authorization: Bearer token`
-  - **Query Parameters:**
+- **Headers:**
+     - `Authorization: Bearer token`
+- **Query Parameters:**
     - `accountNumber`: The account number of the user.
 - **Response:**
 - **Success (200):**
@@ -256,7 +256,7 @@ name, account type, and contact information.
 - **Endpoint**: `/api/changePIN`
 - **Method**: `PUT`
 - **Request:**
-  - **Headers:**
+   - **Headers:**
      - `Authorization: Bearer token`
      - `Content-Type: application/json`
 - **Body:**
